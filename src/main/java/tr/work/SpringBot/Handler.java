@@ -12,7 +12,7 @@ import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardButto
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
-import tr.work.SpringBot.DAO.WordsService;
+import tr.work.SpringBot.DB.WordsService;
 
 import java.util.ArrayList;
 import java.util.List;
