@@ -1,10 +1,11 @@
 package tr.work.SpringBot.DB;
 
 
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
 
 
-public interface WordsRepository extends CrudRepository<Words, Long> {
+
+public interface WordsRepository extends JpaRepository<Words, Long> {
 
 
 }
