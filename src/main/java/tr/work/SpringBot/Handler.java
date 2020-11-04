@@ -20,7 +20,12 @@ import java.util.List;
 public class Handler extends TelegramLongPollingBot {
     private static final String TOKEN = "1127398277:AAGlTNdr0tp2I1YJVzcd--5x38a5_UWbNXw";
     private static final String USERNAME = "TrLangBot";
-    public final String[] StartCommand = {"Главное меню", "Тесты", "О боте"};
+
+    final String test_paper =  new String(Character.toChars(0x1F4DD));
+    final String home = new String(Character.toChars(0x1F3E0));
+    final String robot = new String(Character.toChars(0x1F916));
+    final String hello = new String(Character.toChars(0x270B));
+    public final String[] StartCommand = {home+"Головне меню", test_paper+"Тести", robot+"Про бота"};
     
     @Autowired
     private WordsService wordsService;
@@ -45,11 +50,22 @@ public class Handler extends TelegramLongPollingBot {
                 SendMessage sendMessageRequest = new SendMessage();
                 sendMessageRequest.setChatId(message.getChatId().toString());
                 String text = update.getMessage().getText();
-                if("/start".equalsIgnoreCase(text)){
-                    sendMessageRequest.setText("Привет! Это бот для изучения английского языка.");
+                if("/start".equalsIgnoreCase(text) || text.equalsIgnoreCase(home+"Головне меню")){
+                    sendMessageRequest.setText("<b>Привіт!</b>"+hello+"\nЯ - бот для вивчення слів англійською мовю.");
+                    sendMessageRequest.setParseMode("HTML");
                     setButtons(sendMessageRequest, StartCommand);
 
-                } else{
+                }else if(text.equalsIgnoreCase(robot+"Про бота")){
+                    sendMessageRequest.setText("Я - бот для вивчення слів англійською мовою. Я був створений як кваліфікаційна робота з інформатики учнем Ліцею інформаційних технологій. Створювач цього бота хотів зробити легшим процес вивчення іноземної мови та дізнатися щось нове в програмуванні."+"\n\n" +
+                            "Бот дозволяє проходити тести, знаходячи правильний переклад слів. Саме така тематика є нині дуже актуальною, так як без іноземної мови, такої як англійська, я сьогоденному світі прожити майже неможливо, а така форма, тобто бот у телеграмі, дозволяє вчитись прямо в цьому популярному додатку, яким користуються мільйони людей по всьому світу. Бот є зручним і дозволяє вчити нові слова в будь-який момент часу за умови підключення до мережі."+"\n\n" +
+                            "Під час написання цього боту використовувалася мова програмування Java. Основні технології - це фреймворк Spring, база даних Postgresql і хостинг Heroku."+"\n\n" +
+                            "Ці технології є дуже затребуваними для програмістів, які спеціалізуються на мові Java, і використовуються для створення великої кількості різноманітних додатків і сайтів."
+                    );
+                    sendMessageRequest.setParseMode("HTML");
+                    setButtons(sendMessageRequest, StartCommand);
+
+                }
+                else{
                     String s[] = new String[10];
 
                     sendMessageRequest.setText(message.getText());
@@ -64,6 +80,7 @@ public class Handler extends TelegramLongPollingBot {
 
                 }
             }
+
         }
 
 
