@@ -8,7 +8,7 @@ import javax.persistence.*;
 
 
 @Entity
-@Table(name="Words")
+@Table(name="Tests")
 @Getter
 @Setter
 public class Tests {
@@ -22,6 +22,5 @@ public class Tests {
     @Column
     private String name;
 
-    @Column
-    private long[] words_id;
+
 }

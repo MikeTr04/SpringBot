@@ -7,11 +7,10 @@ import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor    //генерирует конструктор с одним параметром для каждого поля требующего специальной обработки (на сайте ломбока расписано подробнее)
+@RequiredArgsConstructor
 public class WordsService {
 
     private final WordsRepository wordsRepository;
-
 
 
     @Transactional
@@ -22,4 +21,10 @@ public class WordsService {
     public void createWord(Words word){
         wordsRepository.save(word);
     }
+
+
+    public Optional<Words> findById(Long id) {
+        return wordsRepository.findById(id);
+    }
+
 }

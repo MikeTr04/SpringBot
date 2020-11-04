@@ -1,6 +1,7 @@
 package tr.work.SpringBot;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
 import org.telegram.telegrambots.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Message;
@@ -12,14 +13,21 @@ import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardButto
 import org.telegram.telegrambots.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.bots.TelegramLongPollingBot;
 import org.telegram.telegrambots.exceptions.TelegramApiException;
+import tr.work.SpringBot.DB.Words;
+import tr.work.SpringBot.DB.WordsRepository;
 import tr.work.SpringBot.DB.WordsService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class Handler extends TelegramLongPollingBot {
     private static final String TOKEN = "1127398277:AAGlTNdr0tp2I1YJVzcd--5x38a5_UWbNXw";
     private static final String USERNAME = "TrLangBot";
+
+    private WordsRepository wordsRepository;
+
+
 
     final String test_paper =  new String(Character.toChars(0x1F4DD));
     final String home = new String(Character.toChars(0x1F3E0));
@@ -29,7 +37,9 @@ public class Handler extends TelegramLongPollingBot {
     
     @Autowired
     private WordsService wordsService;
-    
+
+
+
     @Override
     public String getBotUsername() {
 
@@ -66,9 +76,23 @@ public class Handler extends TelegramLongPollingBot {
 
                 }
                 else{
-                    String s[] = new String[10];
+                    Optional<Words> word = wordsRepository.findById(1L);
+                    if(word.isPresent()) {
+                        // value is present inside Optional
+                        sendMessageRequest.setText("Value found - " + word.get());
+                    } else {
+                        // value is absent
+                        sendMessageRequest.setText("Optional is empty");
+                    }
+                    sendMessageRequest.setText(word.get().getWord());
 
-                    sendMessageRequest.setText(message.getText());
+                    try {
+                        sendMessage(sendMessageRequest);
+                    } catch (TelegramApiException e) {
+                        e.printStackTrace();
+                    }
+                    sendMessageRequest.setText("Hello");
+
                     setButtons(sendMessageRequest, StartCommand);
                 }
 

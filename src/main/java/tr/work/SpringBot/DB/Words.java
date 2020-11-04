@@ -20,9 +20,4 @@ public class Words {
 
     @Column
     private String definition;
-
-    @Column
-    private Long test_id;
-
-
 }
