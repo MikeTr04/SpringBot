@@ -78,10 +78,10 @@ public class Handler extends TelegramLongPollingBot {
                 else{
                     Optional<Words> word = wordsRepository.findById(1L);
                     if(word.isPresent()) {
-                        // value is present inside Optional
+
                         sendMessageRequest.setText("Value found - " + word.get());
                     } else {
-                        // value is absent
+
                         sendMessageRequest.setText("Optional is empty");
                     }
                     sendMessageRequest.setText(word.get().getWord());
@@ -95,6 +95,9 @@ public class Handler extends TelegramLongPollingBot {
 
                     setButtons(sendMessageRequest, StartCommand);
                 }
+
+
+
 
 
                 try {

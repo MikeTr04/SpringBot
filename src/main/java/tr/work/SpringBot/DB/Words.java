@@ -20,4 +20,12 @@ public class Words {
 
     @Column
     private String definition;
+
+
+
+
+
+
+
+
 }
