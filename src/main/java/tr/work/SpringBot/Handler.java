@@ -1,7 +1,12 @@
 package tr.work.SpringBot;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
+import org.springframework.data.domain.Example;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.telegram.telegrambots.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.api.methods.send.SendMessage;
 import org.telegram.telegrambots.api.objects.Message;
@@ -21,11 +26,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+@RequiredArgsConstructor
 public class Handler extends TelegramLongPollingBot {
     private static final String TOKEN = "1127398277:AAGlTNdr0tp2I1YJVzcd--5x38a5_UWbNXw";
     private static final String USERNAME = "TrLangBot";
 
+
     private WordsRepository wordsRepository;
+
+    private WordsService wordsService = new WordsService(wordsRepository);
+
+    public Handler(WordsService wordsService){
+        this.wordsService = wordsService;
+    }
 
 
 
@@ -35,8 +48,7 @@ public class Handler extends TelegramLongPollingBot {
     final String hello = new String(Character.toChars(0x270B));
     public final String[] StartCommand = {home+"Головне меню", test_paper+"Тести", robot+"Про бота"};
     
-    @Autowired
-    private WordsService wordsService;
+
 
 
 
@@ -74,9 +86,23 @@ public class Handler extends TelegramLongPollingBot {
                     sendMessageRequest.setParseMode("HTML");
                     setButtons(sendMessageRequest, StartCommand);
 
+                }else if(text.equalsIgnoreCase("/info1")){
+                    sendMessageRequest.setText("Щоб створити свого бота, потрібно спочатку зареєструвати його, застосовуючи спеціального бота від Telegram 'BotFather'. Після цього ви оттримаєте токен та зможете встановити ім'я бота, та змінювати фото й інформацію про бота." + "\n\n" +
+                            "Далі, потрібно написати код, який допомагає зареєструвати бота. Для зручності й розширення можливостей може використовуватися популярний фреймворк Spring."
+                    );
+                    sendMessageRequest.setParseMode("HTML");
+                    setButtons(sendMessageRequest, StartCommand);
+
+                }else if(text.equalsIgnoreCase("/info2")){
+                    sendMessageRequest.setText("Для того, щоб хостити бота не зі свого комп'ютера, так як це є дуже незручним, можна використовувати різні сервіси. Але я зупинився на Heroku, тому що він є безкоштовним і відкриває нові можливості для різноманітних додатків." + "\n\n" +
+                            "Наприклад, одна з можливостей Heroku э створення бази даних Postgresql і її хостинг, який також є безкоштовним. Єдиним мінусом є те, що додаток має 'спати' протягом 6 годин. В моєму випадку я вибрав години відпочинку з 2 до 8 ранку, так як у цей час є маловірогідним те, що хтось буде навчатися."
+                    );
+                    sendMessageRequest.setParseMode("HTML");
+                    setButtons(sendMessageRequest, StartCommand);
+
                 }
                 else{
-                    Optional<Words> word = wordsRepository.findById(1L);
+                    Optional<Words> word = wordsService.findById(1L);
                     if(word.isPresent()) {
 
                         sendMessageRequest.setText("Value found - " + word.get());
